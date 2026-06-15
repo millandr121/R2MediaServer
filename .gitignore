@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+build/
+.wrangler/
+.vite/
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+.dev.vars
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+Thumbs.db
+
+# Cloudflare / wrangler local state
+apps/api/.wrangler/
+wrangler.toml.bak
