@@ -33,6 +33,14 @@ function validEmail(email: unknown): email is string {
   return typeof email === "string" && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
 }
 
+/** Whether the instance still needs its first admin (drives the setup screen). */
+auth.get("/status", async (c) => {
+  const row = await c.env.DB.prepare("SELECT COUNT(*) AS n FROM users WHERE role = 'admin'").first<{
+    n: number;
+  }>();
+  return c.json({ needsSetup: !row || row.n === 0 });
+});
+
 /**
  * One-time bootstrap of the first admin. Refuses once any admin exists, so the
  * endpoint is safe to leave deployed.

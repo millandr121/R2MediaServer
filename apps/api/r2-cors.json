@@ -1,0 +1,9 @@
+[
+  {
+    "AllowedOrigins": ["http://localhost:5173", "https://YOUR-PAGES-DOMAIN.pages.dev"],
+    "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+    "AllowedHeaders": ["*"],
+    "ExposeHeaders": ["ETag"],
+    "MaxAgeSeconds": 3600
+  }
+]

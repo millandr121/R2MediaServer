@@ -49,7 +49,23 @@ stock.post("/webhook", async (c) => {
   return c.json({ received: true });
 });
 
-// ---- Purchase download (token-based, metered) ------------------------------
+// ---- Purchase status + download (token-based, metered) ---------------------
+
+/** Poll purchase status after the Stripe redirect; reveals the token once paid. */
+stock.get("/purchases/:id/status", async (c) => {
+  const purchase = await c.env.DB.prepare("SELECT * FROM purchases WHERE id = ?")
+    .bind(c.req.param("id"))
+    .first<PurchaseRow>();
+  if (!purchase) return notFound("Purchase not found");
+  const item = await c.env.DB.prepare("SELECT title FROM stock_items WHERE id = ?")
+    .bind(purchase.stock_item_id)
+    .first<{ title: string }>();
+  return c.json({
+    status: purchase.status,
+    title: item?.title ?? null,
+    downloadToken: purchase.status === "paid" ? purchase.download_token : null,
+  });
+});
 
 stock.get("/purchases/:token/download", async (c) => {
   const purchase = await c.env.DB.prepare(

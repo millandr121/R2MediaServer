@@ -1,0 +1,3 @@
+# Cloudflare Pages: serve the SPA for any path so client-side routes
+# (e.g. /s/<token>, /stock/<id>, /drive/<id>) resolve to index.html.
+/*  /index.html  200

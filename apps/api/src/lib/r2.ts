@@ -185,6 +185,8 @@ export async function deleteObject(env: Env, key: string): Promise<void> {
 
 export async function deleteObjects(env: Env, keys: string[]): Promise<void> {
   if (keys.length === 0) return;
-  // R2 binding delete accepts an array of keys.
-  await env.BUCKET.delete(keys);
+  // R2 binding delete accepts up to 1000 keys per call; chunk to be safe.
+  for (let i = 0; i < keys.length; i += 1000) {
+    await env.BUCKET.delete(keys.slice(i, i + 1000));
+  }
 }
