@@ -20,14 +20,14 @@ body {
 /* Thin, unobtrusive scrollbars. */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #c7d0dd transparent;
+  scrollbar-color: #d8c6a2 transparent;
 }
 *::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 *::-webkit-scrollbar-thumb {
-  background: #c7d0dd;
+  background: #d8c6a2;
   border-radius: 8px;
   border: 2px solid transparent;
   background-clip: content-box;

@@ -53,7 +53,7 @@ export function Layout() {
       {/* Sidebar (desktop) */}
       <aside className="hidden w-60 shrink-0 flex-col border-r border-ink-800 bg-ink-900 py-5 md:flex">
         <Link to="/drive" className="mb-6 flex items-center gap-2.5 px-5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-coral">
             <ShieldCheck className="h-5 w-5 text-slate-900" />
           </div>
           <span className="text-base font-semibold text-slate-900">Vault</span>

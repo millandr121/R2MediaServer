@@ -4,26 +4,41 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Neutral surfaces & borders — a light scale (white cards on soft gray).
+        // Warm, sandy "beach" surfaces — cream page, white cards.
         ink: {
-          950: "#f4f6f9", // page background
+          950: "#fdf4e6", // page background (warm cream)
           900: "#ffffff", // cards / inputs
-          850: "#f1f4f8", // menus / subtle raised surfaces
-          800: "#e9edf3", // hover surfaces
-          700: "#dde3ec", // borders
-          600: "#c7d0dd", // strong borders / hover borders
+          850: "#faf1e0", // menus / raised surfaces
+          800: "#f4e9d4", // hover surfaces (sand)
+          700: "#e9dcc2", // borders
+          600: "#d8c6a2", // strong borders / hover borders
         },
-        // Primary brand & calls-to-action — warm yellow (use dark text on it).
+        // Sunshine yellow — primary brand & CTAs (use dark text on it).
         primary: {
-          DEFAULT: "#f5b50a",
-          hover: "#e0a300",
-          soft: "#fdf3d6",
+          DEFAULT: "#ffc233",
+          hover: "#f2ac10",
+          soft: "#fff0c7",
         },
-        // Secondary accent — blue for links, focus rings, spinners, selection.
+        // Ocean teal/cyan — links, focus rings, selection, spinners.
         accent: {
-          DEFAULT: "#2563eb",
-          hover: "#1d4ed8",
-          soft: "#e7efff",
+          DEFAULT: "#06b6d4",
+          hover: "#0699b4",
+          soft: "#ccf2f8",
+        },
+        // Sunset coral — playful pop (brand gradient, highlights).
+        coral: {
+          DEFAULT: "#ff6f5e",
+          hover: "#f64e3b",
+          soft: "#ffe1db",
+        },
+        // Warm-neutral text (driftwood) to match the sandy surfaces.
+        slate: {
+          400: "#a8a29e",
+          500: "#867f79",
+          600: "#6b635d",
+          700: "#514a44",
+          800: "#3a342f",
+          900: "#272320",
         },
       },
       fontFamily: {

@@ -41,7 +41,7 @@ export function Login() {
     <div className="flex min-h-screen items-center justify-center bg-ink-950 px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center text-center">
-          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary">
+          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-coral shadow-sm">
             <ShieldCheck className="h-6 w-6 text-slate-900" />
           </div>
           <h1 className="text-xl font-semibold text-slate-900">Vault</h1>
