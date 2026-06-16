@@ -17,6 +17,14 @@ main = "src/index.ts"
 compatibility_date = "2024-12-05"
 compatibility_flags = ["nodejs_compat"]
 
+# Serve on the custom domain plus the *.workers.dev subdomain. Declaring the
+# custom domain here keeps it attached to the Worker across deploys (otherwise
+# a deploy can drop a route that was only configured in the dashboard).
+workers_dev = true
+routes = [
+  { pattern = "drive.bamfieldmediahouse.ca", custom_domain = true }
+]
+
 # Public, non-secret config. Override per environment as needed.
 [vars]
 # Comma-separated list of allowed browser origins. The app is same-origin in
