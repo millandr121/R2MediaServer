@@ -22,7 +22,7 @@ compatibility_flags = ["nodejs_compat"]
 # Comma-separated list of allowed browser origins (your Pages site + localhost).
 ALLOWED_ORIGINS = "http://localhost:5173"
 # Your R2 account id (the hex string in the R2 S3 endpoint). Not secret.
-R2_ACCOUNT_ID = ""
+R2_ACCOUNT_ID = "1bec95af9250b042cab2ce1c14f5c885"
 # The R2 bucket name (must match the binding below).
 R2_BUCKET_NAME = "r2-media-server"
 # Base URL of the frontend, used to build share links shown in the UI.
@@ -31,11 +31,11 @@ PUBLIC_APP_URL = "http://localhost:5173"
 [[d1_databases]]
 binding = "DB"
 database_name = "r2-media-server"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "b4482b64-72d6-4853-82e6-a1cc1ad8b9d1"
 
 [[kv_namespaces]]
 binding = "SESSIONS"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "709f7caeebae40f9a911a38baa796f0d"
 
 [[r2_buckets]]
 binding = "BUCKET"
