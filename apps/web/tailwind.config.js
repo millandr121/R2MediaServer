@@ -13,6 +13,8 @@ export default {
           700: "#e2e6ee", // borders
           600: "#cdd3df", // strong borders / hover borders
         },
+        // Inky "poster" line — outlines, hard shadows, strong marks.
+        night: "#1c1917",
         // Sunny yellow — primary brand & CTAs (use dark text on it).
         primary: {
           DEFAULT: "#ffcb1f",
@@ -25,12 +27,11 @@ export default {
           hover: "#1f56e6",
           soft: "#e4ecff",
         },
-        // Hot pink — playful 90s pop (brand gradient, drop targets, highlights).
-        pink: {
-          DEFAULT: "#ff4d97",
-          hover: "#f02d80",
-          soft: "#ffe1ee",
-        },
+        // Surf-poster accent set (used sparingly for pops + categories).
+        pink: { DEFAULT: "#ff4d97", hover: "#f02d80", soft: "#ffe1ee" },
+        lime: { DEFAULT: "#5fce4a", hover: "#49b836", soft: "#e7f8e2" },
+        purple: { DEFAULT: "#9b5de5", hover: "#8344d6", soft: "#efe6fb" },
+        orange: { DEFAULT: "#ff7a3d", hover: "#f0601f", soft: "#ffe8db" },
       },
       fontFamily: {
         sans: [
@@ -43,6 +44,8 @@ export default {
           "Arial",
           "sans-serif",
         ],
+        // Chunky rounded display for the logo + hero headings (surf-poster feel).
+        display: ["Fredoka", "ui-sans-serif", "system-ui", "sans-serif"],
       },
     },
   },
