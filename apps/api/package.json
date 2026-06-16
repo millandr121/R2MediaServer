@@ -6,6 +6,7 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "wrangler dev",
+    "build": "tsc --noEmit",
     "deploy": "wrangler deploy",
     "typecheck": "tsc --noEmit",
     "db:apply:local": "wrangler d1 execute r2-media-server --local --file=./schema.sql",
