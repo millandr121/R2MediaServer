@@ -201,7 +201,7 @@ export function Drive() {
       {/* Header / breadcrumbs + actions */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <nav className="flex items-center gap-1 text-sm text-slate-400">
-          <Link to="/drive" className="flex items-center gap-1.5 hover:text-white">
+          <Link to="/drive" className="flex items-center gap-1.5 hover:text-slate-900">
             <HardDrive className="h-4 w-4" />
             My Drive
           </Link>
@@ -209,9 +209,9 @@ export function Drive() {
             <span key={b.id} className="flex items-center gap-1">
               <ChevronRight className="h-4 w-4 text-slate-600" />
               {i === data.breadcrumbs.length - 1 ? (
-                <span className="font-medium text-white">{b.name}</span>
+                <span className="font-medium text-slate-900">{b.name}</span>
               ) : (
-                <Link to={`/drive/${b.id}`} className="hover:text-white">
+                <Link to={`/drive/${b.id}`} className="hover:text-slate-900">
                   {b.name}
                 </Link>
               )}
@@ -271,7 +271,7 @@ export function Drive() {
             >
               <FolderTile className="h-8 w-8 shrink-0" />
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-slate-200">{folder.name}</p>
+                <p className="truncate text-sm font-medium text-slate-800">{folder.name}</p>
                 <p className="text-xs text-slate-500">Folder</p>
               </div>
               <RowMenu
@@ -317,7 +317,7 @@ export function Drive() {
                 <FileIcon name={file.name} contentType={file.contentType} className="h-7 w-7" />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-slate-200">{file.name}</p>
+                <p className="truncate text-sm font-medium text-slate-800">{file.name}</p>
                 <p className="text-xs text-slate-500">
                   {formatBytes(file.size)} · {formatRelative(file.updatedAt)}
                 </p>
@@ -365,7 +365,7 @@ export function Drive() {
         <div className="pointer-events-none absolute inset-3 z-30 flex items-center justify-center rounded-2xl border-2 border-dashed border-accent bg-accent-soft/40 backdrop-blur-sm">
           <div className="text-center">
             <Upload className="mx-auto mb-2 h-10 w-10 text-accent" />
-            <p className="text-sm font-medium text-white">Drop files to upload</p>
+            <p className="text-sm font-medium text-slate-900">Drop files to upload</p>
           </div>
         </div>
       )}

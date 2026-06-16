@@ -24,7 +24,7 @@ export function StorePage() {
       <StoreHeader />
       <main className="mx-auto max-w-6xl px-5 py-10">
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-white">Stock Footage</h1>
+          <h1 className="text-2xl font-semibold text-slate-900">Stock Footage</h1>
           <p className="mt-1 text-slate-400">Premium clips, licensed for your projects.</p>
         </div>
 
@@ -59,7 +59,7 @@ export function StorePage() {
                   </div>
                 </div>
                 <div className="p-4">
-                  <h3 className="truncate font-medium text-white">{item.title}</h3>
+                  <h3 className="truncate font-medium text-slate-900">{item.title}</h3>
                   {item.tags.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {item.tags.slice(0, 3).map((t) => (

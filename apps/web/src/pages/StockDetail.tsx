@@ -46,7 +46,7 @@ export function StockDetail() {
     <div className="min-h-screen bg-ink-950">
       <StoreHeader />
       <main className="mx-auto max-w-5xl px-5 py-8">
-        <Link to="/stock" className="mb-5 inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white">
+        <Link to="/stock" className="mb-5 inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-slate-900">
           <ArrowLeft className="h-4 w-4" /> Back to store
         </Link>
 
@@ -74,11 +74,11 @@ export function StockDetail() {
             </div>
 
             <div>
-              <h1 className="text-xl font-semibold text-white">{item.title}</h1>
+              <h1 className="text-xl font-semibold text-slate-900">{item.title}</h1>
               <p className="mt-2 text-2xl font-semibold text-accent">
                 {formatPrice(item.priceCents, item.currency)}
               </p>
-              {item.description && <p className="mt-4 text-sm leading-relaxed text-slate-300">{item.description}</p>}
+              {item.description && <p className="mt-4 text-sm leading-relaxed text-slate-700">{item.description}</p>}
               {item.tags.length > 0 && (
                 <div className="mt-4 flex flex-wrap gap-1.5">
                   {item.tags.map((t) => (

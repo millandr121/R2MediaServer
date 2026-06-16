@@ -43,7 +43,7 @@ export function SharesPage() {
   return (
     <div className="px-5 py-5 sm:px-8">
       <div className="mb-6">
-        <h1 className="text-lg font-semibold text-white">Shares</h1>
+        <h1 className="text-lg font-semibold text-slate-900">Shares</h1>
         <p className="text-sm text-slate-400">Active links you've created for files and folders.</p>
       </div>
 
@@ -67,12 +67,12 @@ export function SharesPage() {
                   {s.resourceType === "folder" ? (
                     <Folder className="h-4 w-4 text-accent" />
                   ) : (
-                    <FileGlyph className="h-4 w-4 text-slate-300" />
+                    <FileGlyph className="h-4 w-4 text-slate-700" />
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="truncate text-sm font-medium text-slate-200">
+                    <p className="truncate text-sm font-medium text-slate-800">
                       {s.label ?? `${s.resourceType} link`}
                     </p>
                     {s.hasPassword && <Lock className="h-3.5 w-3.5 text-amber-400" />}

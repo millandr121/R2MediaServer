@@ -81,7 +81,7 @@ export function VideoPlayer({ src, poster }: { src: string; poster?: string }) {
           onClick={toggle}
           className="absolute inset-0 flex items-center justify-center bg-black/20 transition hover:bg-black/30"
         >
-          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-ink-950 shadow-lg">
+          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-zinc-900 shadow-lg">
             <Play className="ml-1 h-7 w-7" fill="currentColor" />
           </span>
         </button>

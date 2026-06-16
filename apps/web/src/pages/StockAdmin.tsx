@@ -125,7 +125,7 @@ export function StockAdmin() {
     <div className="px-5 py-5 sm:px-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-white">Manage store</h1>
+          <h1 className="text-lg font-semibold text-slate-900">Manage store</h1>
           <p className="text-sm text-slate-400">Publish stock footage and digital products for sale.</p>
         </div>
         <button onClick={() => setCreating(true)} className="btn-primary">
@@ -154,7 +154,7 @@ export function StockAdmin() {
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <p className="truncate text-sm font-medium text-slate-200">{item.title}</p>
+                  <p className="truncate text-sm font-medium text-slate-800">{item.title}</p>
                   {!item.published && (
                     <span className="rounded bg-ink-700 px-1.5 py-0.5 text-[10px] text-slate-400">Draft</span>
                   )}

@@ -71,13 +71,13 @@ export function MoveModal({
   return (
     <Modal open onClose={onClose} title={`Move “${item.name}”`} width="max-w-lg">
       <nav className="mb-3 flex flex-wrap items-center gap-1 text-sm text-slate-400">
-        <button onClick={() => setDestId(undefined)} className="flex items-center gap-1.5 hover:text-white">
+        <button onClick={() => setDestId(undefined)} className="flex items-center gap-1.5 hover:text-slate-900">
           <HardDrive className="h-4 w-4" /> My Drive
         </button>
         {data?.breadcrumbs.map((b) => (
           <span key={b.id} className="flex items-center gap-1">
             <ChevronRight className="h-4 w-4 text-slate-600" />
-            <button onClick={() => setDestId(b.id)} className="hover:text-white">
+            <button onClick={() => setDestId(b.id)} className="hover:text-slate-900">
               {b.name}
             </button>
           </span>
@@ -100,7 +100,7 @@ export function MoveModal({
                 className="flex w-full items-center gap-3 px-3 py-2.5 text-left hover:bg-ink-800"
               >
                 <FolderTile className="h-5 w-5" />
-                <span className="flex-1 truncate text-sm text-slate-200">{f.name}</span>
+                <span className="flex-1 truncate text-sm text-slate-800">{f.name}</span>
                 <ChevronRight className="h-4 w-4 text-slate-600" />
               </button>
             ))}
@@ -133,7 +133,7 @@ export function MoveModal({
 
       <div className="mt-5 flex items-center justify-between gap-3">
         <p className="min-w-0 truncate text-sm text-slate-400">
-          Into: <span className="text-slate-200">{destName}</span>
+          Into: <span className="text-slate-800">{destName}</span>
         </p>
         <div className="flex shrink-0 gap-2">
           <button onClick={onClose} className="btn-ghost">
