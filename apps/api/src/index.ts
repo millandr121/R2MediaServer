@@ -50,7 +50,9 @@ app.onError((err, c) => {
     return c.json({ error: err.message }, err.status);
   }
   console.error("Unhandled error:", err);
-  return c.json({ error: "Internal server error" }, 500);
+  // TEMP DEBUG: surface the real error to diagnose the signup 500. Revert after.
+  const e = err as Error;
+  return c.json({ error: `DEBUG ${e?.name ?? "Error"}: ${e?.message ?? String(err)}` }, 500);
 });
 
 app.notFound((c) => c.json({ error: "Not found" }, 404));
