@@ -19,14 +19,22 @@ compatibility_flags = ["nodejs_compat"]
 
 # Public, non-secret config. Override per environment as needed.
 [vars]
-# Comma-separated list of allowed browser origins (your Pages site + localhost).
-ALLOWED_ORIGINS = "http://localhost:5173"
+# Comma-separated list of allowed browser origins. The app is same-origin in
+# production (the Worker serves the site too), so this mainly covers local dev.
+ALLOWED_ORIGINS = "http://localhost:5173,https://drive.bamfieldmediahouse.ca,https://r2mediaserver.andrewglennmiller.workers.dev"
 # Your R2 account id (the hex string in the R2 S3 endpoint). Not secret.
 R2_ACCOUNT_ID = "1bec95af9250b042cab2ce1c14f5c885"
 # The R2 bucket name (must match the binding below).
 R2_BUCKET_NAME = "r2-media-server"
-# Base URL of the frontend, used to build share links shown in the UI.
-PUBLIC_APP_URL = "http://localhost:5173"
+# Base URL of the site, used to build share links shown in the UI.
+PUBLIC_APP_URL = "https://drive.bamfieldmediahouse.ca"
+
+# Serve the built React app (apps/web/dist) for every path that isn't /api/*.
+# Path is relative to this file, so ../web/dist => apps/web/dist.
+[assets]
+directory = "../web/dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
 
 [[d1_databases]]
 binding = "DB"

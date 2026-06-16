@@ -34,7 +34,7 @@ bytes, so even a 50 GB upload costs almost nothing in compute — and R2 charges
 | Backend API      | Cloudflare **Workers** + Hono       | 100k req/day |
 | Database         | Cloudflare **D1** (SQLite at edge)  | 5 GB |
 | Sessions         | Cloudflare **Workers KV**           | 100k reads/day |
-| Frontend         | **Vite + React + TypeScript + Tailwind**, hosted on **Pages** | Free |
+| Frontend         | **Vite + React + TypeScript + Tailwind**, served by the Worker | Free |
 | Payments         | **Stripe** (optional)               | pay per sale |
 
 ## Repository layout
@@ -50,7 +50,7 @@ apps/
 │   ├── schema.sql       D1 schema
 │   ├── wrangler.toml    Bindings + config
 │   └── r2-cors.json     CORS policy for the bucket (see below)
-└── web/                 Vite + React frontend (the UI), deploy to Pages
+└── web/                 Vite + React frontend (built to dist/, served by the Worker)
     └── src/
         ├── lib/         api client, auth context, upload manager
         ├── components/  layout, player, modals, upload tray
@@ -127,7 +127,23 @@ screen. After that you're in your drive.
 
 ## Production deployment
 
-### Backend (Worker)
+The whole app ships as **one Worker**: it serves the API under `/api/*` and the
+built React site (from the `[assets]` binding) for every other path. One domain,
+no CORS, no separate Pages project.
+
+### Continuous deployment (Git integration)
+
+Connect this repo to the Worker (Workers & Pages → your Worker → **Build**) with:
+
+- **Root directory:** `/` (repo root — needed so both workspaces install)
+- **Build command:** `npm run build` (builds `apps/web` → `apps/web/dist`, then type-checks the API)
+- **Deploy command:** `npx wrangler deploy --config apps/api/wrangler.toml`
+- **Version command:** `npx wrangler versions upload --config apps/api/wrangler.toml`
+
+The site is same-origin with the API, so **leave `VITE_API_URL` unset** — the
+client calls `/api/...` on whatever domain serves the page.
+
+### One-time setup (dashboard or CLI)
 
 ```bash
 cd apps/api
@@ -137,29 +153,18 @@ npx wrangler secret put R2_ACCESS_KEY_ID
 npx wrangler secret put R2_SECRET_ACCESS_KEY
 # apply schema to the remote D1
 npm run db:apply:remote
-# deploy
-npm run deploy
 ```
 
-In `wrangler.toml`, set `ALLOWED_ORIGINS` and `PUBLIC_APP_URL` to your Pages
-domain.
-
-### Frontend (Pages)
-
-Connect this repo to **Cloudflare Pages** with:
-
-- **Build command:** `npm run build`
-- **Build output directory:** `apps/web/dist`
-- **Root directory:** `/`
-- **Environment variable:** `VITE_API_URL = https://<your-worker>.workers.dev`
+In `wrangler.toml`, set `PUBLIC_APP_URL` to your site's domain (used to build
+share links). Attach your custom domain (e.g. `drive.example.com`) to the
+**Worker** under Settings → Domains & Routes.
 
 ### Cookie / domain note (security)
 
-The refresh session is an **httpOnly** cookie. For it to flow reliably, deploy
-the API and the UI on the **same root domain** (e.g. `app.example.com` +
-`api.example.com`). The Worker sets `SameSite=None; Secure` over HTTPS, which
-also works same-site. Add both origins to `ALLOWED_ORIGINS` and to the R2 CORS
-policy.
+The refresh session is an **httpOnly** cookie. Because the API and UI are served
+from the same origin, the cookie is first-party and flows reliably. The Worker
+sets `SameSite=None; Secure` over HTTPS. Add your site origin to the R2 CORS
+policy (`r2-cors.json`) so direct browser → R2 uploads/downloads are allowed.
 
 ---
 

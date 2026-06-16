@@ -6,6 +6,7 @@ export interface Env {
   DB: D1Database;
   SESSIONS: KVNamespace;
   BUCKET: R2Bucket;
+  ASSETS: Fetcher; // static React build (apps/web/dist), served for non-/api paths
 
   // Public vars (wrangler.toml [vars])
   ALLOWED_ORIGINS: string;

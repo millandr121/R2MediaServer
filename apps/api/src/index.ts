@@ -27,7 +27,7 @@ app.use("*", (c, next) => {
   })(c, next);
 });
 
-app.get("/", (c) => c.json({ name: "r2-media-server-api", status: "ok" }));
+app.get("/api/health", (c) => c.json({ name: "r2-media-server-api", status: "ok" }));
 
 app.route("/api/auth", auth);
 app.route("/api/folders", folders);
@@ -35,6 +35,12 @@ app.route("/api/files", files);
 app.route("/api/shares", shares);
 app.route("/api/public/shares", publicShares);
 app.route("/api/stock", stock);
+
+// Unmatched API routes always return JSON. Everything else is handled by the
+// static site: the React app is served from the ASSETS binding, with SPA
+// fallback (deep links like /drive/123 resolve to index.html).
+app.all("/api/*", (c) => c.json({ error: "Not found" }, 404));
+app.get("*", (c) => c.env.ASSETS.fetch(c.req.raw));
 
 // Consistent JSON error responses.
 app.onError((err, c) => {
