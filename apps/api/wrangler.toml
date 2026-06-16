@@ -12,7 +12,7 @@
 #
 # For local dev, copy .dev.vars.example to .dev.vars instead of using secrets.
 
-name = "r2-media-server-api"
+name = "r2mediaserver"
 main = "src/index.ts"
 compatibility_date = "2024-12-05"
 compatibility_flags = ["nodejs_compat"]
