@@ -4,6 +4,7 @@ import {
   ChevronRight,
   Download,
   FolderPlus,
+  FolderInput,
   HardDrive,
   Pencil,
   Share2,
@@ -19,10 +20,13 @@ import { FileIcon, FolderTile } from "../components/FileIcon";
 import { RowMenu } from "../components/RowMenu";
 import { ShareModal } from "../components/ShareModal";
 import { PreviewModal } from "../components/PreviewModal";
+import { MoveModal, type MoveItem } from "../components/MoveModal";
 import { Modal, Spinner, EmptyState, toast } from "../components/ui";
 
 type ShareTarget = { type: "file" | "folder"; id: string; name: string };
 type RenameTarget = { kind: "file" | "folder"; id: string; name: string };
+
+const DRAG_TYPE = "application/x-vault-item";
 
 export function Drive() {
   const { folderId } = useParams();
@@ -30,12 +34,14 @@ export function Drive() {
   const [data, setData] = useState<FolderContents | null>(null);
   const [loading, setLoading] = useState(true);
   const [dragOver, setDragOver] = useState(false);
+  const [dropFolderId, setDropFolderId] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
   const [shareTarget, setShareTarget] = useState<ShareTarget | null>(null);
   const [previewFile, setPreviewFile] = useState<FileItem | null>(null);
   const [renameTarget, setRenameTarget] = useState<RenameTarget | null>(null);
   const [renameValue, setRenameValue] = useState("");
+  const [moveTarget, setMoveTarget] = useState<MoveItem | null>(null);
   const [newFolderOpen, setNewFolderOpen] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
   const [busy, setBusy] = useState(false);
@@ -75,6 +81,38 @@ export function Drive() {
     e.preventDefault();
     setDragOver(false);
     if (e.dataTransfer.files.length) startUploads(e.dataTransfer.files);
+  };
+
+  // Move a dragged tile into a destination folder (null = root).
+  const moveItemTo = async (item: MoveItem, destFolderId: string | null) => {
+    if (item.type === "folder" && item.id === destFolderId) return;
+    try {
+      if (item.type === "file") await api.files.update(item.id, { folderId: destFolderId });
+      else await api.folders.update(item.id, { parentId: destFolderId });
+      toast(`Moved “${item.name}”`, "success");
+      load();
+    } catch (err) {
+      toast(err instanceof ApiError ? err.message : "Move failed", "error");
+    }
+  };
+
+  const onTileDragStart = (e: DragEvent, item: MoveItem) => {
+    e.dataTransfer.setData(DRAG_TYPE, JSON.stringify(item));
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const onFolderDrop = (e: DragEvent, destFolderId: string) => {
+    if (!e.dataTransfer.types.includes(DRAG_TYPE)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setDropFolderId(null);
+    const raw = e.dataTransfer.getData(DRAG_TYPE);
+    if (!raw) return;
+    try {
+      moveItemTo(JSON.parse(raw) as MoveItem, destFolderId);
+    } catch {
+      /* ignore malformed drag payloads */
+    }
   };
 
   const createFolder = async () => {
@@ -149,6 +187,9 @@ export function Drive() {
     <div
       className="relative min-h-full px-5 py-5 sm:px-8"
       onDragOver={(e) => {
+        // Only react to files dragged in from the OS; internal tile drags are
+        // handled by the folder drop targets below.
+        if (!e.dataTransfer.types.includes("Files")) return;
         e.preventDefault();
         setDragOver(true);
       }}
@@ -212,8 +253,21 @@ export function Drive() {
           {data?.folders.map((folder) => (
             <div
               key={folder.id}
+              draggable
+              onDragStart={(e) => onTileDragStart(e, { type: "folder", id: folder.id, name: folder.name })}
+              onDragOver={(e) => {
+                if (!e.dataTransfer.types.includes(DRAG_TYPE)) return;
+                e.preventDefault();
+                e.stopPropagation();
+                e.dataTransfer.dropEffect = "move";
+                setDropFolderId(folder.id);
+              }}
+              onDragLeave={() => setDropFolderId((id) => (id === folder.id ? null : id))}
+              onDrop={(e) => onFolderDrop(e, folder.id)}
               onClick={() => navigate(`/drive/${folder.id}`)}
-              className="card group flex cursor-pointer items-center gap-3 p-3 transition-colors hover:border-ink-600 hover:bg-ink-800"
+              className={`card group flex cursor-pointer items-center gap-3 p-3 transition-colors hover:border-ink-600 hover:bg-ink-800 ${
+                dropFolderId === folder.id ? "border-accent bg-accent-soft/40 ring-1 ring-accent" : ""
+              }`}
             >
               <FolderTile className="h-8 w-8 shrink-0" />
               <div className="min-w-0 flex-1">
@@ -226,6 +280,11 @@ export function Drive() {
                     label: "Share",
                     icon: <Share2 className="h-4 w-4" />,
                     onClick: () => setShareTarget({ type: "folder", id: folder.id, name: folder.name }),
+                  },
+                  {
+                    label: "Move to…",
+                    icon: <FolderInput className="h-4 w-4" />,
+                    onClick: () => setMoveTarget({ type: "folder", id: folder.id, name: folder.name }),
                   },
                   {
                     label: "Rename",
@@ -249,6 +308,8 @@ export function Drive() {
           {data?.files.map((file) => (
             <div
               key={file.id}
+              draggable
+              onDragStart={(e) => onTileDragStart(e, { type: "file", id: file.id, name: file.name })}
               onClick={() => openFile(file)}
               className="card group flex cursor-pointer items-center gap-3 p-3 transition-colors hover:border-ink-600 hover:bg-ink-800"
             >
@@ -274,6 +335,11 @@ export function Drive() {
                     onClick: () => setShareTarget({ type: "file", id: file.id, name: file.name }),
                   },
                   {
+                    label: "Move to…",
+                    icon: <FolderInput className="h-4 w-4" />,
+                    onClick: () => setMoveTarget({ type: "file", id: file.id, name: file.name }),
+                  },
+                  {
                     label: "Rename",
                     icon: <Pencil className="h-4 w-4" />,
                     onClick: () => {
@@ -294,7 +360,7 @@ export function Drive() {
         </div>
       )}
 
-      {/* Drag overlay */}
+      {/* Drag overlay (OS file upload) */}
       {dragOver && (
         <div className="pointer-events-none absolute inset-3 z-30 flex items-center justify-center rounded-2xl border-2 border-dashed border-accent bg-accent-soft/40 backdrop-blur-sm">
           <div className="text-center">
@@ -313,6 +379,7 @@ export function Drive() {
           onClose={() => setShareTarget(null)}
         />
       )}
+      {moveTarget && <MoveModal item={moveTarget} onClose={() => setMoveTarget(null)} onMoved={load} />}
       {previewFile && (
         <PreviewModal
           file={previewFile}
