@@ -1,0 +1,6 @@
+# Copy this file to `.dev.vars` for local `wrangler dev`.
+# `.dev.vars` is gitignored — never commit real secrets.
+
+JWT_SECRET="change-me-to-a-long-random-string-at-least-32-chars"
+R2_ACCESS_KEY_ID="your-r2-s3-access-key-id"
+R2_SECRET_ACCESS_KEY="your-r2-s3-secret-access-key"
