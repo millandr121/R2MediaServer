@@ -14,6 +14,7 @@ export function RowMenu({ actions }: { actions: MenuAction[] }) {
   return (
     <div className="relative">
       <button
+        onPointerDown={(e) => e.stopPropagation()}
         onClick={(e) => {
           e.stopPropagation();
           setOpen((v) => !v);

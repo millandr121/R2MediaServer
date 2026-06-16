@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { api, ApiError } from "../lib/api";
 import { uploads } from "../lib/upload";
+import { useTileDrag } from "../lib/useTileDrag";
 import type { FileItem, Folder, FolderContents } from "../lib/types";
 import { formatBytes, formatRelative, fileKind, isPreviewable } from "../lib/format";
 import { FileIcon, FolderTile } from "../components/FileIcon";
@@ -26,7 +27,7 @@ import { Modal, Spinner, EmptyState, toast } from "../components/ui";
 type ShareTarget = { type: "file" | "folder"; id: string; name: string };
 type RenameTarget = { kind: "file" | "folder"; id: string; name: string };
 
-const DRAG_TYPE = "application/x-vault-item";
+const noSelect = { WebkitTouchCallout: "none", WebkitUserSelect: "none" } as const;
 
 export function Drive() {
   const { folderId } = useParams();
@@ -34,7 +35,6 @@ export function Drive() {
   const [data, setData] = useState<FolderContents | null>(null);
   const [loading, setLoading] = useState(true);
   const [dragOver, setDragOver] = useState(false);
-  const [dropFolderId, setDropFolderId] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
   const [shareTarget, setShareTarget] = useState<ShareTarget | null>(null);
@@ -83,7 +83,7 @@ export function Drive() {
     if (e.dataTransfer.files.length) startUploads(e.dataTransfer.files);
   };
 
-  // Move a dragged tile into a destination folder (null = root).
+  // Move an item into a destination folder (null = root).
   const moveItemTo = async (item: MoveItem, destFolderId: string | null) => {
     if (item.type === "folder" && item.id === destFolderId) return;
     try {
@@ -96,24 +96,8 @@ export function Drive() {
     }
   };
 
-  const onTileDragStart = (e: DragEvent, item: MoveItem) => {
-    e.dataTransfer.setData(DRAG_TYPE, JSON.stringify(item));
-    e.dataTransfer.effectAllowed = "move";
-  };
-
-  const onFolderDrop = (e: DragEvent, destFolderId: string) => {
-    if (!e.dataTransfer.types.includes(DRAG_TYPE)) return;
-    e.preventDefault();
-    e.stopPropagation();
-    setDropFolderId(null);
-    const raw = e.dataTransfer.getData(DRAG_TYPE);
-    if (!raw) return;
-    try {
-      moveItemTo(JSON.parse(raw) as MoveItem, destFolderId);
-    } catch {
-      /* ignore malformed drag payloads */
-    }
-  };
+  // Touch + mouse drag of tiles onto folders.
+  const drag = useTileDrag((item, destFolderId) => moveItemTo(item, destFolderId));
 
   const createFolder = async () => {
     if (!newFolderName.trim()) return;
@@ -187,8 +171,8 @@ export function Drive() {
     <div
       className="relative min-h-full px-5 py-5 sm:px-8"
       onDragOver={(e) => {
-        // Only react to files dragged in from the OS; internal tile drags are
-        // handled by the folder drop targets below.
+        // Only react to files dragged in from the OS; tile-to-folder moves are
+        // handled by the pointer drag below.
         if (!e.dataTransfer.types.includes("Files")) return;
         e.preventDefault();
         setDragOver(true);
@@ -253,21 +237,14 @@ export function Drive() {
           {data?.folders.map((folder) => (
             <div
               key={folder.id}
-              draggable
-              onDragStart={(e) => onTileDragStart(e, { type: "folder", id: folder.id, name: folder.name })}
-              onDragOver={(e) => {
-                if (!e.dataTransfer.types.includes(DRAG_TYPE)) return;
-                e.preventDefault();
-                e.stopPropagation();
-                e.dataTransfer.dropEffect = "move";
-                setDropFolderId(folder.id);
-              }}
-              onDragLeave={() => setDropFolderId((id) => (id === folder.id ? null : id))}
-              onDrop={(e) => onFolderDrop(e, folder.id)}
-              onClick={() => navigate(`/drive/${folder.id}`)}
-              className={`card group flex cursor-pointer items-center gap-3 p-3 transition-colors hover:border-ink-600 hover:bg-ink-800 ${
-                dropFolderId === folder.id ? "border-accent bg-accent-soft/40 ring-1 ring-accent" : ""
-              }`}
+              data-drop-folder={folder.id}
+              {...drag.bind({ type: "folder", id: folder.id, name: folder.name })}
+              onClick={drag.click(() => navigate(`/drive/${folder.id}`))}
+              onContextMenu={(e) => e.preventDefault()}
+              style={noSelect}
+              className={`card group flex cursor-pointer select-none items-center gap-3 p-3 transition-colors hover:border-ink-600 hover:bg-ink-800 ${
+                drag.overId === folder.id ? "border-pink bg-pink-soft ring-2 ring-pink" : ""
+              } ${drag.active?.id === folder.id ? "opacity-40" : ""}`}
             >
               <FolderTile className="h-8 w-8 shrink-0" />
               <div className="min-w-0 flex-1">
@@ -308,10 +285,13 @@ export function Drive() {
           {data?.files.map((file) => (
             <div
               key={file.id}
-              draggable
-              onDragStart={(e) => onTileDragStart(e, { type: "file", id: file.id, name: file.name })}
-              onClick={() => openFile(file)}
-              className="card group flex cursor-pointer items-center gap-3 p-3 transition-colors hover:border-ink-600 hover:bg-ink-800"
+              {...drag.bind({ type: "file", id: file.id, name: file.name })}
+              onClick={drag.click(() => openFile(file))}
+              onContextMenu={(e) => e.preventDefault()}
+              style={noSelect}
+              className={`card group flex cursor-pointer select-none items-center gap-3 p-3 transition-colors hover:border-ink-600 hover:bg-ink-800 ${
+                drag.active?.id === file.id ? "opacity-40" : ""
+              }`}
             >
               <div className="flex h-8 w-8 shrink-0 items-center justify-center">
                 <FileIcon name={file.name} contentType={file.contentType} className="h-7 w-7" />
@@ -357,6 +337,23 @@ export function Drive() {
               />
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Floating "ghost" that follows the finger/cursor while dragging a tile. */}
+      {drag.active && drag.ghost && (
+        <div
+          className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-[140%] rounded-lg border border-ink-700 bg-white px-3 py-2 shadow-xl"
+          style={{ left: drag.ghost.x, top: drag.ghost.y }}
+        >
+          <div className="flex items-center gap-2 text-sm font-medium text-slate-800">
+            {drag.active.type === "folder" ? (
+              <FolderTile className="h-5 w-5" />
+            ) : (
+              <FileIcon name={drag.active.name} contentType={null} className="h-5 w-5" />
+            )}
+            <span className="max-w-[44vw] truncate">{drag.active.name}</span>
+          </div>
         </div>
       )}
 

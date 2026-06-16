@@ -4,41 +4,32 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Warm, sandy "beach" surfaces — cream page, white cards.
+        // Clean, near-white surfaces — white cards on a faint off-white page.
         ink: {
-          950: "#fdf4e6", // page background (warm cream)
+          950: "#f7f8fa", // page background (faint off-white)
           900: "#ffffff", // cards / inputs
-          850: "#faf1e0", // menus / raised surfaces
-          800: "#f4e9d4", // hover surfaces (sand)
-          700: "#e9dcc2", // borders
-          600: "#d8c6a2", // strong borders / hover borders
+          850: "#f3f5f9", // menus / raised surfaces
+          800: "#eceff4", // hover surfaces
+          700: "#e2e6ee", // borders
+          600: "#cdd3df", // strong borders / hover borders
         },
-        // Sunshine yellow — primary brand & CTAs (use dark text on it).
+        // Sunny yellow — primary brand & CTAs (use dark text on it).
         primary: {
-          DEFAULT: "#ffc233",
-          hover: "#f2ac10",
-          soft: "#fff0c7",
+          DEFAULT: "#ffcb1f",
+          hover: "#f2b400",
+          soft: "#fff2c2",
         },
-        // Ocean teal/cyan — links, focus rings, selection, spinners.
+        // Electric blue — links, focus rings, selection, spinners.
         accent: {
-          DEFAULT: "#06b6d4",
-          hover: "#0699b4",
-          soft: "#ccf2f8",
+          DEFAULT: "#2f6bff",
+          hover: "#1f56e6",
+          soft: "#e4ecff",
         },
-        // Sunset coral — playful pop (brand gradient, highlights).
-        coral: {
-          DEFAULT: "#ff6f5e",
-          hover: "#f64e3b",
-          soft: "#ffe1db",
-        },
-        // Warm-neutral text (driftwood) to match the sandy surfaces.
-        slate: {
-          400: "#a8a29e",
-          500: "#867f79",
-          600: "#6b635d",
-          700: "#514a44",
-          800: "#3a342f",
-          900: "#272320",
+        // Hot pink — playful 90s pop (brand gradient, drop targets, highlights).
+        pink: {
+          DEFAULT: "#ff4d97",
+          hover: "#f02d80",
+          soft: "#ffe1ee",
         },
       },
       fontFamily: {

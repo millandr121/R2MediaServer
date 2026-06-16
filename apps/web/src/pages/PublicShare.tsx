@@ -69,8 +69,8 @@ export function PublicShare() {
     <div className="min-h-screen bg-ink-950">
       <header className="border-b border-ink-800 bg-ink-900/60">
         <div className="mx-auto flex max-w-5xl items-center gap-2.5 px-5 py-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-coral">
-            <ShieldCheck className="h-5 w-5 text-slate-900" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-pink">
+            <ShieldCheck className="h-5 w-5 text-white" />
           </div>
           <span className="text-base font-semibold text-slate-900">Vault</span>
           <span className="ml-auto text-xs text-slate-500">Secure share</span>
