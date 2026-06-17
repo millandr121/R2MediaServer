@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
-import { HardDrive, Share2, Store, LogOut, Menu, X, ShieldCheck, Settings } from "lucide-react";
+import { HardDrive, Share2, Store, LogOut, Menu, X, Settings } from "lucide-react";
 import { useAuth } from "../lib/auth";
 import { UploadTray } from "./UploadTray";
 
@@ -53,10 +53,10 @@ export function Layout() {
       {/* Sidebar (desktop) */}
       <aside className="hidden w-60 shrink-0 flex-col border-r border-ink-800 bg-ink-900 py-5 md:flex">
         <Link to="/drive" className="mb-6 flex items-center gap-2.5 px-5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-night bg-gradient-to-br from-accent to-pink shadow-[2px_2px_0_#1c1917]">
-            <ShieldCheck className="h-5 w-5 text-white" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-pink">
+            <img src="/logo-badge.svg" className="h-5 w-5" alt="" />
           </div>
-          <span className="font-display text-lg font-bold text-slate-900">Drive</span>
+          <span className="font-display text-lg font-bold text-lime">Drive</span>
         </Link>
         {nav}
         <div className="mt-auto border-t border-ink-800 px-3 pt-4">
@@ -77,10 +77,10 @@ export function Layout() {
           <aside className="absolute left-0 top-0 flex h-full w-64 flex-col border-r border-ink-800 bg-ink-900 py-5">
             <div className="mb-6 flex items-center justify-between px-5">
               <span className="flex items-center gap-2.5">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-night bg-gradient-to-br from-accent to-pink shadow-[2px_2px_0_#1c1917]">
-                  <ShieldCheck className="h-5 w-5 text-white" />
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-pink">
+                  <img src="/logo-badge.svg" className="h-5 w-5" alt="" />
                 </span>
-                <span className="font-display text-lg font-bold text-slate-900">Drive</span>
+                <span className="font-display text-lg font-bold text-lime">Drive</span>
               </span>
               <button onClick={() => setOpen(false)} className="btn-ghost h-8 w-8 !p-0">
                 <X className="h-4 w-4" />
@@ -102,10 +102,10 @@ export function Layout() {
             <Menu className="h-5 w-5" />
           </button>
           <span className="flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded-md border-2 border-night bg-gradient-to-br from-accent to-pink shadow-[2px_2px_0_#1c1917]">
-              <ShieldCheck className="h-4 w-4 text-white" />
+            <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-pink">
+              <img src="/logo-badge.svg" className="h-4 w-4" alt="" />
             </span>
-            <span className="font-display text-lg font-bold text-slate-900">Drive</span>
+            <span className="font-display text-lg font-bold text-lime">Drive</span>
           </span>
         </header>
         <main className="flex-1 overflow-y-auto">

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 56" fill="none">
+  <!-- Paper body -->
+  <path d="M4 4 L30 4 L40 14 L40 44 L4 44 Z" fill="white" stroke="#1c1917" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Folded corner -->
+  <path d="M30 4 L40 14 L30 14 Z" fill="#fce4f2" stroke="#1c1917" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Pink drip band -->
+  <rect x="4" y="40" width="36" height="4" rx="0" fill="#ff4d97"/>
+  <!-- Drip drops -->
+  <ellipse cx="11" cy="49" rx="4" ry="5.5" fill="#ff4d97"/>
+  <ellipse cx="22" cy="51" rx="3.5" ry="5" fill="#ff4d97"/>
+  <ellipse cx="33" cy="48" rx="3" ry="4.5" fill="#ff4d97"/>
+</svg>

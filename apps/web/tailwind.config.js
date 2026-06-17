@@ -45,7 +45,7 @@ export default {
           "sans-serif",
         ],
         // Chunky rounded display for the logo + hero headings (surf-poster feel).
-        display: ["Fredoka", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Boogaloo", "ui-sans-serif", "system-ui", "sans-serif"],
       },
     },
   },

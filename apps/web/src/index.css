@@ -38,10 +38,8 @@ body {
     @apply inline-flex items-center justify-center gap-2 rounded-lg border-2 border-transparent px-3.5 py-2
       text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 select-none;
   }
-  /* Primary = yellow "sticker" button: black outline + hard offset shadow. */
   .btn-primary {
-    @apply btn border-night bg-primary text-slate-900 shadow-[2px_2px_0_#1c1917] hover:bg-primary-hover
-      active:translate-x-[2px] active:translate-y-[2px] active:shadow-none;
+    @apply btn bg-primary text-slate-900 hover:bg-primary-hover active:scale-95;
   }
   .btn-ghost {
     @apply btn text-slate-600 hover:bg-ink-800 hover:text-slate-900;

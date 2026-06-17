@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { useParams } from "react-router-dom";
-import { ChevronRight, Download, Lock, ShieldCheck, FolderOpen, ArrowLeft } from "lucide-react";
+import { ChevronRight, Download, Lock, FolderOpen, ArrowLeft } from "lucide-react";
 import { api, ApiError } from "../lib/api";
 import type { FileItem, PublicShareResponse } from "../lib/types";
 import { formatBytes, fileKind, isPreviewable } from "../lib/format";
@@ -69,10 +69,10 @@ export function PublicShare() {
     <div className="min-h-screen bg-ink-950">
       <header className="border-b border-ink-800 bg-ink-900/60">
         <div className="mx-auto flex max-w-5xl items-center gap-2.5 px-5 py-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-night bg-gradient-to-br from-accent to-pink shadow-[2px_2px_0_#1c1917]">
-            <ShieldCheck className="h-5 w-5 text-white" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-pink">
+            <img src="/logo-badge.svg" className="h-5 w-5" alt="" />
           </div>
-          <span className="font-display text-lg font-bold text-slate-900">Drive</span>
+          <span className="font-display text-lg font-bold text-lime">Drive</span>
           <span className="ml-auto text-xs text-slate-500">Secure share</span>
         </div>
       </header>
