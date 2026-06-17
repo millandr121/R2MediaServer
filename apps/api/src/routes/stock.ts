@@ -146,7 +146,7 @@ stock.post("/", requireAuth, requireAdmin, async (c) => {
       title,
       typeof body.description === "string" ? body.description : null,
       Math.max(0, Math.floor(Number(body.priceCents ?? 0))),
-      typeof body.currency === "string" ? body.currency.toLowerCase() : "usd",
+      typeof body.currency === "string" ? body.currency.toLowerCase() : "cad",
       Array.isArray(body.tags) ? JSON.stringify(body.tags.slice(0, 30)) : null,
       body.published ? 1 : 0,
       ts,

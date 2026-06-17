@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ShieldCheck, LayoutDashboard } from "lucide-react";
+import { LayoutDashboard } from "lucide-react";
 import { useAuth } from "../lib/auth";
 
 export function StoreHeader() {
@@ -8,10 +8,10 @@ export function StoreHeader() {
     <header className="border-b border-ink-800 bg-ink-900/60 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center gap-2.5 px-5 py-4">
         <Link to="/stock" className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent">
-            <ShieldCheck className="h-5 w-5 text-white" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-pink">
+            <img src="/logo-badge.svg" className="h-5 w-5" alt="" />
           </div>
-          <span className="text-base font-semibold text-white">Vault Store</span>
+          <span className="font-display text-lg font-bold text-purple">Store</span>
         </Link>
         <div className="ml-auto flex items-center gap-2">
           {user ? (

@@ -58,14 +58,14 @@ export function StockSuccess() {
           {state === "pending" && (
             <>
               <Spinner className="mx-auto h-9 w-9 text-accent" />
-              <h1 className="mt-4 text-lg font-semibold text-white">Confirming your payment…</h1>
+              <h1 className="mt-4 text-lg font-semibold text-slate-900">Confirming your payment…</h1>
               <p className="mt-1 text-sm text-slate-400">This usually takes just a few seconds.</p>
             </>
           )}
           {state === "paid" && (
             <>
               <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-400" />
-              <h1 className="mt-4 text-lg font-semibold text-white">Thank you!</h1>
+              <h1 className="mt-4 text-lg font-semibold text-slate-900">Thank you!</h1>
               <p className="mt-1 text-sm text-slate-400">
                 Your purchase{title ? ` of “${title}”` : ""} is complete.
               </p>
@@ -78,7 +78,7 @@ export function StockSuccess() {
           {state === "timeout" && (
             <>
               <Clock className="mx-auto h-12 w-12 text-amber-400" />
-              <h1 className="mt-4 text-lg font-semibold text-white">Payment is processing</h1>
+              <h1 className="mt-4 text-lg font-semibold text-slate-900">Payment is processing</h1>
               <p className="mt-1 text-sm text-slate-400">
                 It's taking a little longer than usual. Check your email for the download link shortly.
               </p>
@@ -86,7 +86,7 @@ export function StockSuccess() {
           )}
           {state === "error" && (
             <>
-              <h1 className="text-lg font-semibold text-white">Purchase not found</h1>
+              <h1 className="text-lg font-semibold text-slate-900">Purchase not found</h1>
               <p className="mt-1 text-sm text-slate-400">We couldn't locate this order.</p>
               <Link to="/stock" className="btn-outline mt-6">
                 Back to store

@@ -67,11 +67,11 @@ export function ShareModal({
         <div className="space-y-4">
           <p className="text-sm text-slate-400">
             Anyone with this link {share.hasPassword ? "and the password " : ""}can access{" "}
-            <span className="text-slate-200">{resourceName}</span>.
+            <span className="text-slate-800">{resourceName}</span>.
           </p>
           <div className="flex items-center gap-2 rounded-lg border border-ink-700 bg-ink-950 p-2">
             <Link2 className="ml-1 h-4 w-4 shrink-0 text-slate-500" />
-            <input readOnly value={share.url} className="flex-1 bg-transparent text-sm text-slate-200 outline-none" />
+            <input readOnly value={share.url} className="flex-1 bg-transparent text-sm text-slate-800 outline-none" />
             <button onClick={copy} className="btn-primary h-8">
               {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
             </button>
@@ -94,7 +94,7 @@ export function ShareModal({
                   className={`rounded-lg px-3 py-1.5 text-sm transition-colors ${
                     expiry === o.hours
                       ? "bg-accent text-white"
-                      : "border border-ink-700 text-slate-300 hover:bg-ink-800"
+                      : "border border-ink-700 text-slate-700 hover:bg-ink-800"
                   }`}
                 >
                   {o.label}
@@ -124,7 +124,7 @@ export function ShareModal({
             />
           </div>
           {resourceType === "folder" && (
-            <label className="flex items-center gap-2.5 text-sm text-slate-300">
+            <label className="flex items-center gap-2.5 text-sm text-slate-700">
               <input
                 type="checkbox"
                 checked={allowUpload}

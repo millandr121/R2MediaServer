@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { useParams } from "react-router-dom";
-import { ChevronRight, Download, Lock, ShieldCheck, FolderOpen, ArrowLeft } from "lucide-react";
+import { ChevronRight, Download, Lock, FolderOpen, ArrowLeft } from "lucide-react";
 import { api, ApiError } from "../lib/api";
 import type { FileItem, PublicShareResponse } from "../lib/types";
 import { formatBytes, fileKind, isPreviewable } from "../lib/format";
@@ -69,10 +69,10 @@ export function PublicShare() {
     <div className="min-h-screen bg-ink-950">
       <header className="border-b border-ink-800 bg-ink-900/60">
         <div className="mx-auto flex max-w-5xl items-center gap-2.5 px-5 py-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent">
-            <ShieldCheck className="h-5 w-5 text-white" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-pink">
+            <img src="/logo-badge.svg" className="h-5 w-5" alt="" />
           </div>
-          <span className="text-base font-semibold text-white">Vault</span>
+          <span className="font-display text-lg font-bold text-lime">Drive</span>
           <span className="ml-auto text-xs text-slate-500">Secure share</span>
         </div>
       </header>
@@ -108,7 +108,7 @@ export function PublicShare() {
               <Lock className="h-5 w-5 text-amber-400" />
             </div>
             <div>
-              <h2 className="text-base font-semibold text-white">Password required</h2>
+              <h2 className="text-base font-semibold text-slate-900">Password required</h2>
               <p className="mt-1 text-sm text-slate-400">Enter the password to view this share.</p>
             </div>
             <input
@@ -140,7 +140,7 @@ export function PublicShare() {
             <div className="flex items-center gap-4">
               <FileIcon name={file.name} contentType={file.contentType} className="h-10 w-10" />
               <div className="min-w-0 flex-1">
-                <h1 className="truncate text-lg font-semibold text-white">{file.name}</h1>
+                <h1 className="truncate text-lg font-semibold text-slate-900">{file.name}</h1>
                 <p className="text-sm text-slate-400">{formatBytes(file.size)}</p>
               </div>
             </div>
@@ -194,9 +194,9 @@ export function PublicShare() {
             <span key={b.id} className="flex items-center gap-1">
               {i > 0 && <ChevronRight className="h-4 w-4 text-slate-600" />}
               {i === (data.breadcrumbs?.length ?? 0) - 1 ? (
-                <span className="font-medium text-white">{b.name}</span>
+                <span className="font-medium text-slate-900">{b.name}</span>
               ) : (
-                <button onClick={() => setNavFolder(b.id)} className="hover:text-white">
+                <button onClick={() => setNavFolder(b.id)} className="hover:text-slate-900">
                   {b.name}
                 </button>
               )}
@@ -216,7 +216,7 @@ export function PublicShare() {
               className="card flex items-center gap-3 p-3 text-left transition-colors hover:border-ink-600 hover:bg-ink-800"
             >
               <FolderTile className="h-8 w-8 shrink-0" />
-              <span className="truncate text-sm font-medium text-slate-200">{folder.name}</span>
+              <span className="truncate text-sm font-medium text-slate-800">{folder.name}</span>
             </button>
           ))}
           {data.files?.map((file) => (
@@ -227,7 +227,7 @@ export function PublicShare() {
               <button onClick={() => open(file)} className="flex min-w-0 flex-1 items-center gap-3 text-left">
                 <FileIcon name={file.name} contentType={file.contentType} className="h-7 w-7 shrink-0" />
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-slate-200">{file.name}</p>
+                  <p className="truncate text-sm font-medium text-slate-800">{file.name}</p>
                   <p className="text-xs text-slate-500">{formatBytes(file.size)}</p>
                 </div>
               </button>

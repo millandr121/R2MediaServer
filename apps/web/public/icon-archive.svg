@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 50" fill="none">
+  <!-- Lid -->
+  <rect x="3" y="8" width="42" height="10" rx="3" fill="#f59e0b" stroke="#1c1917" stroke-width="2.5"/>
+  <!-- Body -->
+  <rect x="5" y="16" width="38" height="28" rx="2" fill="#ffcb1f" stroke="#1c1917" stroke-width="2.5"/>
+  <!-- Zipper strip down center -->
+  <rect x="19" y="16" width="10" height="28" fill="#f59e0b"/>
+  <circle cx="24" cy="22" r="2.5" fill="#1c1917"/>
+  <circle cx="24" cy="30" r="2.5" fill="#1c1917"/>
+  <circle cx="24" cy="38" r="2.5" fill="#1c1917"/>
+</svg>

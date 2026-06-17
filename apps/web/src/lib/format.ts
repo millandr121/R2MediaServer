@@ -23,8 +23,8 @@ export function formatRelative(unixSeconds: number): string {
   return formatDate(unixSeconds);
 }
 
-export function formatPrice(cents: number, currency = "usd"): string {
-  return new Intl.NumberFormat(undefined, { style: "currency", currency: currency.toUpperCase() }).format(
+export function formatPrice(cents: number, currency = "cad"): string {
+  return new Intl.NumberFormat("en-CA", { style: "currency", currency: currency.toUpperCase() }).format(
     cents / 100,
   );
 }

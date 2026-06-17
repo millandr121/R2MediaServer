@@ -7,7 +7,9 @@
  *   pbkdf2$<iterations>$<saltB64>$<hashB64>
  */
 
-const ITERATIONS = 210_000; // OWASP-recommended floor for PBKDF2-SHA256
+// Cloudflare Workers' Web Crypto caps PBKDF2 at 100k iterations (requests above
+// that throw NotSupportedError), so we use the max the runtime allows.
+const ITERATIONS = 100_000;
 const KEY_LEN = 32;
 const enc = new TextEncoder();
 

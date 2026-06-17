@@ -31,13 +31,13 @@ export function FilePicker({
   return (
     <Modal open onClose={onClose} title={title} width="max-w-xl">
       <nav className="mb-3 flex flex-wrap items-center gap-1 text-sm text-slate-400">
-        <button onClick={() => setFolderId(undefined)} className="flex items-center gap-1.5 hover:text-white">
+        <button onClick={() => setFolderId(undefined)} className="flex items-center gap-1.5 hover:text-slate-900">
           <HardDrive className="h-4 w-4" /> Drive
         </button>
         {data?.breadcrumbs.map((b) => (
           <span key={b.id} className="flex items-center gap-1">
             <ChevronRight className="h-4 w-4 text-slate-600" />
-            <button onClick={() => setFolderId(b.id)} className="hover:text-white">
+            <button onClick={() => setFolderId(b.id)} className="hover:text-slate-900">
               {b.name}
             </button>
           </span>
@@ -60,7 +60,7 @@ export function FilePicker({
                 className="flex w-full items-center gap-3 px-3 py-2.5 text-left hover:bg-ink-800"
               >
                 <FolderTile className="h-5 w-5" />
-                <span className="text-sm text-slate-200">{f.name}</span>
+                <span className="text-sm text-slate-800">{f.name}</span>
               </button>
             ))}
             {data?.files.map((f) => (
@@ -70,7 +70,7 @@ export function FilePicker({
                 className="flex w-full items-center gap-3 px-3 py-2.5 text-left hover:bg-ink-800"
               >
                 <FileIcon name={f.name} contentType={f.contentType} className="h-5 w-5" />
-                <span className="flex-1 truncate text-sm text-slate-200">{f.name}</span>
+                <span className="flex-1 truncate text-sm text-slate-800">{f.name}</span>
                 <span className="text-xs text-slate-500">{formatBytes(f.size)}</span>
               </button>
             ))}

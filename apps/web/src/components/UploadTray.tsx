@@ -21,7 +21,7 @@ function TaskRow({ task }: { task: UploadTask }) {
             <Spinner className="h-4 w-4 text-accent" />
           )}
         </div>
-        <span className="flex-1 truncate text-sm text-slate-200">{task.name}</span>
+        <span className="flex-1 truncate text-sm text-slate-800">{task.name}</span>
         <span className="shrink-0 text-xs text-slate-500">
           {done ? formatBytes(task.size) : `${pct}%`}
         </span>
@@ -30,7 +30,7 @@ function TaskRow({ task }: { task: UploadTask }) {
             <X className="h-3.5 w-3.5" />
           </button>
         ) : (
-          <button onClick={() => uploads.dismiss(task.id)} className="text-slate-500 hover:text-slate-300">
+          <button onClick={() => uploads.dismiss(task.id)} className="text-slate-500 hover:text-slate-700">
             <X className="h-3.5 w-3.5" />
           </button>
         )}
@@ -58,11 +58,11 @@ export function UploadTray() {
   return (
     <div className="fixed bottom-4 right-4 z-40 w-80 overflow-hidden rounded-xl border border-ink-700 bg-ink-850 shadow-2xl">
       <div className="flex items-center justify-between border-b border-ink-700 px-3 py-2">
-        <span className="flex items-center gap-2 text-sm font-medium text-slate-200">
+        <span className="flex items-center gap-2 text-sm font-medium text-slate-800">
           <Upload className="h-4 w-4 text-accent" />
           {active > 0 ? `Uploading ${active} file${active > 1 ? "s" : ""}` : "Uploads"}
         </span>
-        <button onClick={() => uploads.clearFinished()} className="text-xs text-slate-500 hover:text-slate-300">
+        <button onClick={() => uploads.clearFinished()} className="text-xs text-slate-500 hover:text-slate-700">
           Clear
         </button>
       </div>

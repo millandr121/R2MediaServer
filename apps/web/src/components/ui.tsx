@@ -41,7 +41,7 @@ export function Modal({
       <div className={`card relative z-10 w-full ${width} bg-ink-900 p-5 shadow-2xl`}>
         {title && (
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-base font-semibold text-white">{title}</h2>
+            <h2 className="text-base font-semibold text-slate-900">{title}</h2>
             <button onClick={onClose} className="btn-ghost -mr-2 h-8 w-8 !p-0">
               <X className="h-4 w-4" />
             </button>
@@ -59,7 +59,7 @@ export function EmptyState({ icon, title, hint }: { icon: ReactNode; title: stri
     <div className="flex flex-col items-center justify-center gap-3 py-20 text-center">
       <div className="text-slate-600">{icon}</div>
       <div>
-        <p className="text-sm font-medium text-slate-300">{title}</p>
+        <p className="text-sm font-medium text-slate-700">{title}</p>
         {hint && <p className="mt-1 text-xs text-slate-500">{hint}</p>}
       </div>
     </div>
@@ -110,7 +110,7 @@ export function Toaster() {
       {list.map((t) => (
         <div
           key={t.id}
-          className="pointer-events-auto flex items-center gap-2.5 rounded-lg border border-ink-700 bg-ink-850 px-4 py-2.5 text-sm text-slate-200 shadow-xl"
+          className="pointer-events-auto flex items-center gap-2.5 rounded-lg border border-ink-700 bg-white px-4 py-2.5 text-sm text-slate-800 shadow-xl"
         >
           {ICONS[t.type]}
           <span>{t.message}</span>

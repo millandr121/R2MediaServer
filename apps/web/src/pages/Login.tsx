@@ -1,6 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { ShieldCheck } from "lucide-react";
 import { useAuth } from "../lib/auth";
 import { api, ApiError } from "../lib/api";
 import { Spinner, toast } from "../components/ui";
@@ -38,15 +37,26 @@ export function Login() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-ink-950 px-4">
-      <div className="w-full max-w-sm">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-ink-950 px-4">
+      {/* Faint surf-poster sunburst behind the brand. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-[24%] h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-[0.07]"
+        style={{
+          background: "repeating-conic-gradient(#2f6bff 0deg 14deg, transparent 14deg 28deg)",
+          WebkitMaskImage: "radial-gradient(circle, #000 36%, transparent 68%)",
+          maskImage: "radial-gradient(circle, #000 36%, transparent 68%)",
+        }}
+      />
+
+      <div className="relative z-10 w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center text-center">
-          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-accent">
-            <ShieldCheck className="h-6 w-6 text-white" />
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-accent to-pink">
+            <img src="/logo-badge.svg" className="h-8 w-8" alt="" />
           </div>
-          <h1 className="text-xl font-semibold text-white">Vault</h1>
-          <p className="mt-1 text-sm text-slate-400">
-            {mode === "setup" ? "Create your admin account to get started" : "Sign in to your media server"}
+          <h1 className="font-display text-3xl font-bold text-lime">Drive</h1>
+          <p className="mt-1 text-sm text-slate-500">
+            {mode === "setup" ? "Create your admin account to get started" : "Sign in to your media drive"}
           </p>
         </div>
 
@@ -99,9 +109,7 @@ export function Login() {
           </form>
         )}
 
-        <p className="mt-6 text-center text-xs text-slate-600">
-          Cloudflare R2 · zero-egress media delivery
-        </p>
+        <p className="mt-6 text-center text-xs text-slate-500">Cloudflare R2 · zero-egress media delivery</p>
       </div>
     </div>
   );
