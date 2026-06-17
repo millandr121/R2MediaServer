@@ -51,10 +51,8 @@ export function Login() {
 
       <div className="relative z-10 w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center text-center">
-          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-accent to-pink">
-            <img src="/logo-badge.svg" className="h-8 w-8" alt="" />
-          </div>
-          <h1 className="font-display text-3xl font-bold text-lime">Drive</h1>
+          <img src="/cloud1.png" alt="" className="mb-3 h-20 w-20 object-contain" />
+          <img src="/drive1.png" alt="Drive" className="h-12 object-contain" />
           <p className="mt-1 text-sm text-slate-500">
             {mode === "setup" ? "Create your admin account to get started" : "Sign in to your media drive"}
           </p>
