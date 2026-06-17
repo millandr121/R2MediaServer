@@ -52,11 +52,9 @@ export function Layout() {
     <div className="flex h-screen overflow-hidden bg-ink-950">
       {/* Sidebar (desktop) */}
       <aside className="hidden w-60 shrink-0 flex-col border-r border-ink-800 bg-ink-900 py-5 md:flex">
-        <Link to="/drive" className="mb-6 flex items-center gap-2.5 px-5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-pink">
-            <img src="/logo-badge.svg" className="h-5 w-5" alt="" />
-          </div>
-          <span className="font-display text-lg font-bold text-lime">Drive</span>
+        <Link to="/drive" className="mb-6 flex items-center gap-2 px-5">
+          <img src="/cloud1.png" alt="" className="h-9 w-9 object-contain" />
+          <img src="/drive1.png" alt="Drive" className="h-6 object-contain" />
         </Link>
         {nav}
         <div className="mt-auto border-t border-ink-800 px-3 pt-4">
@@ -76,11 +74,9 @@ export function Layout() {
           <div className="absolute inset-0 bg-black/60" onClick={() => setOpen(false)} />
           <aside className="absolute left-0 top-0 flex h-full w-64 flex-col border-r border-ink-800 bg-ink-900 py-5">
             <div className="mb-6 flex items-center justify-between px-5">
-              <span className="flex items-center gap-2.5">
-                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-pink">
-                  <img src="/logo-badge.svg" className="h-5 w-5" alt="" />
-                </span>
-                <span className="font-display text-lg font-bold text-lime">Drive</span>
+              <span className="flex items-center gap-2">
+                <img src="/cloud1.png" alt="" className="h-8 w-8 object-contain" />
+                <img src="/drive1.png" alt="Drive" className="h-6 object-contain" />
               </span>
               <button onClick={() => setOpen(false)} className="btn-ghost h-8 w-8 !p-0">
                 <X className="h-4 w-4" />
@@ -102,10 +98,8 @@ export function Layout() {
             <Menu className="h-5 w-5" />
           </button>
           <span className="flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-pink">
-              <img src="/logo-badge.svg" className="h-4 w-4" alt="" />
-            </span>
-            <span className="font-display text-lg font-bold text-lime">Drive</span>
+            <img src="/cloud1.png" alt="" className="h-7 w-7 object-contain" />
+            <img src="/drive1.png" alt="Drive" className="h-5 object-contain" />
           </span>
         </header>
         <main className="flex-1 overflow-y-auto">

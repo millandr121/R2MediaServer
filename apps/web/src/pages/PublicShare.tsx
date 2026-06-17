@@ -69,10 +69,8 @@ export function PublicShare() {
     <div className="min-h-screen bg-ink-950">
       <header className="border-b border-ink-800 bg-ink-900/60">
         <div className="mx-auto flex max-w-5xl items-center gap-2.5 px-5 py-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-pink">
-            <img src="/logo-badge.svg" className="h-5 w-5" alt="" />
-          </div>
-          <span className="font-display text-lg font-bold text-lime">Drive</span>
+          <img src="/cloud1.png" alt="" className="h-8 w-8 object-contain" />
+          <img src="/drive1.png" alt="Drive" className="h-6 object-contain" />
           <span className="ml-auto text-xs text-slate-500">Secure share</span>
         </div>
       </header>
