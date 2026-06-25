@@ -221,4 +221,131 @@ pub.post("/:token/complete/:fileId", async (c) => {
   return c.json({ ok: true });
 });
 
+// ---- Public media delivery (CDN streaming + manifest for website embeds) ----
+
+/**
+ * Stream a file directly from R2 with CDN-friendly cache headers.
+ * Only works on password-free shares. Cloudflare caches at the edge after the
+ * first hit, so subsequent embeds on bamfieldmediahouse.ca cost zero Worker CPU.
+ * Supports HTTP Range so <video> seeking works.
+ */
+pub.get("/:token/stream/:fileId", async (c) => {
+  const share = await resolveShare(c, c.req.param("token"));
+  if (share.password_hash != null) return forbidden("Streaming is not available on password-protected shares");
+
+  const fileId = c.req.param("fileId");
+  let file: FileRow | null = null;
+
+  if (share.resource_type === "file") {
+    if (fileId !== share.resource_id) return notFound("File not part of this share");
+    file = await c.env.DB.prepare("SELECT * FROM files WHERE id = ? AND status = 'ready'")
+      .bind(fileId).first<FileRow>();
+  } else {
+    const candidate = await c.env.DB.prepare("SELECT * FROM files WHERE id = ? AND status = 'ready'")
+      .bind(fileId).first<FileRow>();
+    const root = await c.env.DB.prepare("SELECT * FROM folders WHERE id = ?")
+      .bind(share.resource_id).first<FolderRow>();
+    if (candidate && root && candidate.folder_id) {
+      const folder = await c.env.DB.prepare("SELECT * FROM folders WHERE id = ?")
+        .bind(candidate.folder_id).first<FolderRow>();
+      if (folder && withinSubtree(root, folder)) file = candidate;
+    }
+  }
+  if (!file) return notFound("File not part of this share");
+
+  const rangeHeader = c.req.header("range");
+  let obj: R2ObjectBody | null;
+  let status = 200;
+  const headers = new Headers();
+
+  if (rangeHeader) {
+    const m = rangeHeader.match(/bytes=(\d*)-(\d*)/);
+    if (m) {
+      const start = m[1] ? parseInt(m[1]) : 0;
+      const end = m[2] ? parseInt(m[2]) : file.size - 1;
+      obj = await c.env.BUCKET.get(file.r2_key, { range: { offset: start, length: end - start + 1 } });
+      if (obj) {
+        headers.set("Content-Range", `bytes ${start}-${end}/${file.size}`);
+        headers.set("Content-Length", String(end - start + 1));
+        status = 206;
+      }
+    } else {
+      obj = await c.env.BUCKET.get(file.r2_key);
+    }
+  } else {
+    obj = await c.env.BUCKET.get(file.r2_key);
+  }
+
+  if (!obj) return notFound("File not found in storage");
+
+  headers.set("Content-Type", file.content_type ?? "application/octet-stream");
+  if (status === 200) headers.set("Content-Length", String(file.size));
+  headers.set("Accept-Ranges", "bytes");
+  // Cache for 1 year at Cloudflare's edge — new uploads get new file IDs so
+  // there's no stale-content risk.
+  headers.set("Cache-Control", "public, max-age=31536000, immutable");
+  headers.set("Access-Control-Allow-Origin", "*");
+  headers.set("Vary", "Accept-Encoding");
+
+  return new Response(obj.body, { status, headers });
+});
+
+/**
+ * JSON manifest of every file in a shared folder tree (recursive).
+ * Intended for consumption by bamfieldmediahouse.ca — fetch this URL on page
+ * load and render any combination of the returned assets. Stream URLs in the
+ * payload are stable, CDN-cached references.
+ *
+ * Example: GET /api/public/shares/TOKEN/manifest
+ */
+pub.get("/:token/manifest", async (c) => {
+  const share = await resolveShare(c, c.req.param("token"));
+  if (share.password_hash != null) return forbidden("Manifest is not available on password-protected shares");
+  if (share.resource_type !== "folder") return badRequest("Manifest is only available for folder shares");
+
+  const root = await c.env.DB.prepare("SELECT * FROM folders WHERE id = ?")
+    .bind(share.resource_id).first<FolderRow>();
+  if (!root) return notFound("Shared folder is no longer available");
+
+  // One query pulls all files in the entire subtree via the materialized path.
+  const rows = await c.env.DB.prepare(
+    `SELECT f.*, fo.path AS folder_path, fo.name AS folder_name
+     FROM files f
+     JOIN folders fo ON f.folder_id = fo.id
+     WHERE (fo.id = ? OR fo.path LIKE ?)
+       AND f.status = 'ready'
+     ORDER BY fo.path, f.name COLLATE NOCASE`,
+  )
+    .bind(root.id, `${root.path}/%`)
+    .all<FileRow & { folder_path: string; folder_name: string }>();
+
+  const url = new URL(c.req.url);
+  const origin = `${url.protocol}//${url.host}`;
+
+  const files = rows.results.map((f) => ({
+    id: f.id,
+    name: f.name,
+    // Relative sub-folder path within the share root (empty = directly in root)
+    folder: f.folder_path.replace(root.path, "").replace(/^\//, "") || null,
+    url: `${origin}/api/public/shares/${share.id}/stream/${f.id}`,
+    contentType: f.content_type ?? null,
+    size: f.size,
+    width: f.width ?? null,
+    height: f.height ?? null,
+    duration: f.duration ?? null,
+    createdAt: f.created_at,
+  }));
+
+  return new Response(
+    JSON.stringify({ folder: root.name, token: share.id, count: files.length, files }, null, 2),
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "public, max-age=300", // 5-min manifest cache; stale entries fall off naturally
+        "Access-Control-Allow-Origin": "*",
+      },
+    },
+  );
+});
+
 export default pub;
