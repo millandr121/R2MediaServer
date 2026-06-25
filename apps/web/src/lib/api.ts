@@ -6,6 +6,7 @@ import type {
   Share,
   StockItem,
   PublicShareResponse,
+  IntakeSubmission,
 } from "./types";
 
 const BASE = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
@@ -181,6 +182,17 @@ export const api = {
       const qs = q.toString();
       return request<{ url: string }>(`/api/public/shares/${token}/download/${fileId}${qs ? `?${qs}` : ""}`);
     },
+  },
+
+  intake: {
+    list: () => request<{ submissions: IntakeSubmission[] }>("/api/intake"),
+    get: (id: string) =>
+      request<{ submission: IntakeSubmission; files: FileItem[] }>(`/api/intake/${id}`),
+    setStatus: (id: string, status: IntakeSubmission["status"]) =>
+      request<{ submission: IntakeSubmission }>(`/api/intake/${id}`, {
+        method: "PATCH",
+        body: { status },
+      }),
   },
 
   stock: {

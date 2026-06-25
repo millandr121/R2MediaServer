@@ -16,3 +16,5 @@ export const unauthorized = (m = "Unauthorized") => fail(401, m, "unauthorized")
 export const forbidden = (m = "Forbidden") => fail(403, m, "forbidden");
 export const notFound = (m = "Not found") => fail(404, m, "not_found");
 export const gone = (m = "No longer available") => fail(410, m, "gone");
+export const tooManyRequests = (m = "Too many requests") => fail(429, m, "rate_limited");
+export const serverError = (m = "Server error") => fail(500, m, "server_error");

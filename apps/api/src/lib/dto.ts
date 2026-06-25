@@ -1,4 +1,4 @@
-import type { FolderRow, FileRow, ShareRow, StockItemRow } from "../types";
+import type { FolderRow, FileRow, ShareRow, StockItemRow, IntakeSubmissionRow } from "../types";
 
 export function toFolderDTO(r: FolderRow) {
   return {
@@ -44,6 +44,30 @@ export function toShareDTO(r: ShareRow, appUrl: string) {
     revoked: r.revoked === 1,
     createdAt: r.created_at,
   };
+}
+
+export function toIntakeDTO(r: IntakeSubmissionRow) {
+  return {
+    id: r.id,
+    folderId: r.folder_id,
+    customerName: r.customer_name,
+    customerEmail: r.customer_email,
+    customerPhone: r.customer_phone,
+    orderDetails: r.order_details ? safeJson(r.order_details) : null,
+    message: r.message,
+    status: r.status,
+    fileCount: r.file_count,
+    createdAt: r.created_at,
+    updatedAt: r.updated_at,
+  };
+}
+
+function safeJson(s: string): unknown {
+  try {
+    return JSON.parse(s);
+  } catch {
+    return s;
+  }
 }
 
 export function toStockDTO(r: StockItemRow) {

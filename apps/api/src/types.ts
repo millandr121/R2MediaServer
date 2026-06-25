@@ -125,3 +125,17 @@ export interface PurchaseRow {
   download_count: number;
   created_at: number;
 }
+
+export interface IntakeSubmissionRow {
+  id: string;
+  folder_id: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string | null;
+  order_details: string | null;
+  message: string | null;
+  status: "new" | "in_progress" | "printed" | "delivered" | "cancelled";
+  file_count: number;
+  created_at: number;
+  updated_at: number;
+}

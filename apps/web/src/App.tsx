@@ -10,6 +10,7 @@ import { StorePage } from "./pages/StorePage";
 import { StockDetail } from "./pages/StockDetail";
 import { StockSuccess } from "./pages/StockSuccess";
 import { StockAdmin } from "./pages/StockAdmin";
+import { IntakePage } from "./pages/IntakePage";
 import { NotFound } from "./pages/NotFound";
 
 function RequireAuth() {
@@ -43,6 +44,7 @@ export default function App() {
           <Route path="/drive" element={<Drive />} />
           <Route path="/drive/:folderId" element={<Drive />} />
           <Route path="/shares" element={<SharesPage />} />
+          <Route path="/intake" element={<RequireAdmin><IntakePage /></RequireAdmin>} />
           <Route path="/stock/admin" element={<RequireAdmin><StockAdmin /></RequireAdmin>} />
         </Route>
       </Route>
