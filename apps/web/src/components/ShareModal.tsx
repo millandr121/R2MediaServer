@@ -1,8 +1,31 @@
 import { useState } from "react";
-import { Copy, Check, Link2 } from "lucide-react";
+import { Copy, Check, Link2, Globe } from "lucide-react";
 import { api, ApiError } from "../lib/api";
 import type { Share } from "../lib/types";
 import { Modal, Spinner, toast } from "./ui";
+
+/** A read-only URL field with its own copy button. */
+function CopyRow({
+  url,
+  icon,
+  copied,
+  onCopy,
+}: {
+  url: string;
+  icon: React.ReactNode;
+  copied: boolean;
+  onCopy: () => void;
+}) {
+  return (
+    <div className="flex items-center gap-2 rounded-lg border border-ink-700 bg-ink-950 p-2">
+      {icon}
+      <input readOnly value={url} className="flex-1 bg-transparent text-sm text-slate-800 outline-none" />
+      <button onClick={onCopy} className="btn-primary h-8">
+        {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+      </button>
+    </div>
+  );
+}
 
 const EXPIRY_OPTIONS = [
   { label: "1 day", hours: 24 },
@@ -31,7 +54,7 @@ export function ShareModal({
   const [allowUpload, setAllowUpload] = useState(false);
   const [busy, setBusy] = useState(false);
   const [share, setShare] = useState<Share | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [copiedField, setCopiedField] = useState<"human" | "website" | null>(null);
 
   const create = async () => {
     setBusy(true);
@@ -53,13 +76,20 @@ export function ShareModal({
     }
   };
 
-  const copy = () => {
-    if (!share) return;
-    navigator.clipboard.writeText(share.url);
-    setCopied(true);
+  const copy = (value: string, field: "human" | "website") => {
+    navigator.clipboard.writeText(value);
+    setCopiedField(field);
     toast("Link copied", "success");
-    setTimeout(() => setCopied(false), 1500);
+    setTimeout(() => setCopiedField(null), 1500);
   };
+
+  // The website/manifest link reuses the same token, just a different path.
+  // Only meaningful for password-free folder shares (the API blocks manifest
+  // on password-protected or single-file shares).
+  const websiteUrl =
+    share && share.resourceType === "folder" && !share.hasPassword
+      ? `${new URL(share.url).origin}/api/public/shares/${share.token}/manifest`
+      : null;
 
   return (
     <Modal open onClose={onClose} title={share ? "Share link ready" : "Create share link"}>
@@ -69,13 +99,37 @@ export function ShareModal({
             Anyone with this link {share.hasPassword ? "and the password " : ""}can access{" "}
             <span className="text-slate-800">{resourceName}</span>.
           </p>
-          <div className="flex items-center gap-2 rounded-lg border border-ink-700 bg-ink-950 p-2">
-            <Link2 className="ml-1 h-4 w-4 shrink-0 text-slate-500" />
-            <input readOnly value={share.url} className="flex-1 bg-transparent text-sm text-slate-800 outline-none" />
-            <button onClick={copy} className="btn-primary h-8">
-              {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-            </button>
+
+          <div>
+            <label className="label">
+              Share link <span className="font-normal text-slate-500">— for people</span>
+            </label>
+            <CopyRow
+              url={share.url}
+              icon={<Link2 className="ml-1 h-4 w-4 shrink-0 text-slate-500" />}
+              copied={copiedField === "human"}
+              onCopy={() => copy(share.url, "human")}
+            />
           </div>
+
+          {websiteUrl && (
+            <div>
+              <label className="label">
+                Website link <span className="font-normal text-slate-500">— for your site &amp; code</span>
+              </label>
+              <CopyRow
+                url={websiteUrl}
+                icon={<Globe className="ml-1 h-4 w-4 shrink-0 text-accent" />}
+                copied={copiedField === "website"}
+                onCopy={() => copy(websiteUrl, "website")}
+              />
+              <p className="mt-1.5 text-xs text-slate-500">
+                Give this one to your website / Claude. It returns a live list of every file in this folder to embed
+                on bamfieldmediahouse.ca. New uploads show up within ~5 minutes — no rebuild needed.
+              </p>
+            </div>
+          )}
+
           <div className="flex justify-end">
             <button onClick={onClose} className="btn-outline">
               Done
