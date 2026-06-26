@@ -29,7 +29,7 @@ routes = [
 [vars]
 # Comma-separated list of allowed browser origins. The app is same-origin in
 # production (the Worker serves the site too), so this mainly covers local dev.
-ALLOWED_ORIGINS = "http://localhost:5173,https://drive.bamfieldmediahouse.ca,https://r2mediaserver.andrewglennmiller.workers.dev"
+ALLOWED_ORIGINS = "http://localhost:5173,https://drive.bamfieldmediahouse.ca,https://r2mediaserver.andrewglennmiller.workers.dev,https://bamfieldmediahouse.ca,https://www.bamfieldmediahouse.ca"
 # Your R2 account id (the hex string in the R2 S3 endpoint). Not secret.
 R2_ACCOUNT_ID = "1bec95af9250b042cab2ce1c14f5c885"
 # The R2 bucket name (must match the binding below).

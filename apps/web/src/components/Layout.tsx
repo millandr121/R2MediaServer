@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
-import { HardDrive, Share2, Store, LogOut, Menu, X, Settings } from "lucide-react";
+import { HardDrive, Share2, Store, LogOut, Menu, X, Settings, Inbox } from "lucide-react";
 import { useAuth } from "../lib/auth";
 import { UploadTray } from "./UploadTray";
 
@@ -37,6 +37,9 @@ export function Layout() {
       <NavItem to="/drive" icon={<HardDrive className="h-4 w-4" />} label="My Drive" onClick={() => setOpen(false)} />
       <NavItem to="/shares" icon={<Share2 className="h-4 w-4" />} label="Shares" onClick={() => setOpen(false)} />
       <NavItem to="/stock" icon={<Store className="h-4 w-4" />} label="Store" onClick={() => setOpen(false)} />
+      {isAdmin && (
+        <NavItem to="/intake" icon={<Inbox className="h-4 w-4" />} label="Intake" onClick={() => setOpen(false)} />
+      )}
       {isAdmin && (
         <NavItem
           to="/stock/admin"

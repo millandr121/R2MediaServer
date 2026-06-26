@@ -71,6 +71,28 @@ export interface StockItem {
   updatedAt: number;
 }
 
+export interface IntakeOrderLine {
+  size?: string;
+  qty?: number;
+  paper?: string;
+  finish?: string;
+  notes?: string;
+}
+
+export interface IntakeSubmission {
+  id: string;
+  folderId: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string | null;
+  orderDetails: IntakeOrderLine[] | string | null;
+  message: string | null;
+  status: "new" | "in_progress" | "printed" | "delivered" | "cancelled";
+  fileCount: number;
+  createdAt: number;
+  updatedAt: number;
+}
+
 export interface PublicShareResponse {
   share: {
     token: string;

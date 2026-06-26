@@ -9,6 +9,7 @@ import files from "./routes/files";
 import shares from "./routes/shares";
 import publicShares from "./routes/publicShares";
 import stock from "./routes/stock";
+import intake from "./routes/intake";
 
 const app = new Hono<AppEnv>();
 
@@ -35,6 +36,7 @@ app.route("/api/files", files);
 app.route("/api/shares", shares);
 app.route("/api/public/shares", publicShares);
 app.route("/api/stock", stock);
+app.route("/api/intake", intake);
 
 // Unmatched API routes always return JSON. Everything else is handled by the
 // static site: the React app is served from the ASSETS binding, with SPA

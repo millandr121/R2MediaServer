@@ -126,6 +126,28 @@ CREATE INDEX IF NOT EXISTS idx_purchases_token ON purchases(download_token);
 CREATE INDEX IF NOT EXISTS idx_purchases_stripe ON purchases(stripe_session_id);
 
 ------------------------------------------------------------------------------
+-- Intake submissions: public print-house photo intake. Each submission is one
+-- customer's order — a dedicated folder of photos plus their contact & order
+-- details — so uploads stay organized by who they belong to.
+------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS intake_submissions (
+  id             TEXT PRIMARY KEY,
+  folder_id      TEXT NOT NULL,                     -- the per-customer folder
+  customer_name  TEXT NOT NULL,
+  customer_email TEXT NOT NULL,
+  customer_phone TEXT,
+  order_details  TEXT,                              -- JSON: [{size, qty, paper, finish, notes}]
+  message        TEXT,
+  status         TEXT NOT NULL DEFAULT 'new',       -- 'new'|'in_progress'|'printed'|'delivered'|'cancelled'
+  file_count     INTEGER NOT NULL DEFAULT 0,
+  created_at     INTEGER NOT NULL,
+  updated_at     INTEGER NOT NULL,
+  FOREIGN KEY (folder_id) REFERENCES folders(id) ON DELETE CASCADE
+);
+CREATE INDEX IF NOT EXISTS idx_intake_status ON intake_submissions(status);
+CREATE INDEX IF NOT EXISTS idx_intake_created ON intake_submissions(created_at);
+
+------------------------------------------------------------------------------
 -- Audit log: lightweight security trail for sensitive actions.
 ------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS audit_log (
