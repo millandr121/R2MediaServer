@@ -11,7 +11,8 @@
     "dev:web": "npm run dev --workspace apps/web",
     "build": "npm run build --workspace apps/web && npm run build --workspace apps/api",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "deploy:api": "npm run deploy --workspace apps/api"
+    "deploy:api": "npm run deploy --workspace apps/api",
+    "deploy:email": "npx wrangler deploy --config bmh-email-forwarder/wrangler.toml"
   },
   "engines": {
     "node": ">=20"
