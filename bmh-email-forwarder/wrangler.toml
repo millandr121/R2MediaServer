@@ -1,0 +1,7 @@
+name = "bmh-email-forwarder"
+main = "index.js"
+compatibility_date = "2024-01-01"
+# RESEND_API_KEY is stored as a secret — never hard-code it here.
+# After deploying, run:
+#   wrangler secret put RESEND_API_KEY --config bmh-email-forwarder/wrangler.toml
+# and paste the Resend API key when prompted.
